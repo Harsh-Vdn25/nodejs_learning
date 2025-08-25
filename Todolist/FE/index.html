@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <form action="" id="signupform">
+            <h2 id="formHeading">Signup</h3>
+                <div class="info">
+                    <label>Username:</label>
+                <input type="text" id="username">
+                </div>
+                <div class="info">
+                    <label>Password:</label>
+                <input type="password" id="userpassword">
+                </div>
+                <button type="submit" id="submitbtn" onclick="Signup(event)">Signup</button>
+                <div class="signin-text">
+                <span id="toggleText">Already have an account?</span>
+                <button type="button" id="signin" onclick="SigningIn()">Sign in</button>
+            </div>
+
+        </form>
+    </div>
+   <script>
+    let isSigningin = false;
+
+    const toggleBtn = document.getElementById("signin");
+    const formHeading = document.getElementById("formHeading");
+    const toggleText = document.getElementById("toggleText");
+    const submitBtn = document.getElementById("submitbtn");
+    const user=document.getElementById("username");
+    const password =document.getElementById("userpassword");
+
+    function updateUI() {
+        if (isSigningin) {
+            user.value="";
+            password.value="";
+            toggleBtn.innerHTML = "Signup";
+            formHeading.innerHTML = "Sign In";
+            toggleText.innerHTML = "Don't have an account?";
+            submitBtn.innerHTML = "Sign In";
+            submitBtn.setAttribute("onclick", "Signin(event)");
+        } else {
+            user.value="";
+            password.value="";
+            toggleBtn.innerHTML = "Sign in";
+            formHeading.innerHTML = "Sign Up";
+            toggleText.innerHTML = "Already have an account?";
+            submitBtn.innerHTML = "Sign Up";
+            submitBtn.setAttribute("onclick", "Signup(event)");
+        }
+    }
+
+    function SigningIn() {
+        isSigningin = !isSigningin;  
+        updateUI();                  
+    }
+
+    function Signin(event) {
+        event.preventDefault();
+        axios.post("http://localhost:3000/signinauth", {
+            Signtype: "Signin",
+            userName: document.getElementById("username").value.trim(),
+            password: document.getElementById("userpassword").value.trim()
+        }).then(res=>redirectPage(res.data))
+          .catch(err => console.log("Error", err));
+    }
+
+    function Signup(event) {
+        event.preventDefault();
+        axios.post("http://localhost:3000/signupauth", {
+            Signtype: "Signup",
+            userName: document.getElementById("username").value.trim(),
+            password: document.getElementById("userpassword").value.trim()
+        }).then(res=>redirectPage(res.data))
+          .catch(err => console.log("Error", err));
+    }
+
+    //Sending the userinfo to make sure that the todolist is fetched properly on Todolist.html
+    function redirectPage(data){
+        console.log(data);
+        if(data.status==="success"){
+            axios.post("http://localhost:3001/todo",{
+                userName:document.getElementById("username").value.trim()
+            })
+            .then(res=>console.log(res.data))
+            .catch(err=>console.log(err));
+            window.location.href=data.redirectUrl;
+        }
+    }
+    // Run once on load
+    updateUI();
+</script>
+</body>
+</html>
