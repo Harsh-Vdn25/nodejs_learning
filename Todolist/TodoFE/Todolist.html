@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="todostyles.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h2>Your Todo list</h2>
+        <input type="text" placeholder="Add a new todo"/>
+        <div class="todos">
+
+        </div>
+        <button id="addbtn" onclick="AddTodo()">Add Todo</button>
+    </div>
+    <script>
+        const todocontainer=document.querySelector(".todos");
+
+        function getTodolists(){
+            const urlparams=new URLSearchParams(window.location.search);
+            const userName=urlparams.get("userName");
+            axios.get(`http://localhost:3001/getTodo?userName=${userName}`)
+            .then(res=>displayAllTodos(res.data))//
+            .catch(err=>console.log(err));
+        }
+
+        function displayAllTodos(data){
+            const newdata=Object.entries(data.Tasks);
+            console.log(newdata);
+            newdata.map(item=>{
+                const box=document.createElement('div');
+                const checkbox=document.createElement('input');
+                checkbox.type="checkbox";
+                checkbox.setAttribute("id",item[1].id);
+                checkbox.setAttribute("onclick","deleteTodo(event)");
+                const disp=document.createElement('p');
+                disp.innerHTML=item[1].task;
+
+                box.setAttribute("id",`box${item[1].id}`);
+                box.appendChild(disp);
+                box.appendChild(checkbox);
+                box.classList.add("todobox");
+                document.querySelector(".todos").appendChild(box);
+            })
+        }
+
+        getTodolists();
+
+        //Adding Todos
+        function AddTodo() {
+            // 1. Get the input element and its value
+            const inputElement = document.querySelector('input[type="text"]');
+            const todoText = inputElement.value.trim();
+
+            // 2. Prevent adding empty todos
+            if (todoText === '') {
+                alert("Please enter a todo item!");
+                return;
+            }
+
+            // 3. Create the new todo item container
+            const todoBox = document.createElement('div');
+            todoBox.classList.add('todobox');
+
+            // 4. Create the paragraph for the todo text
+            const todoDisp = document.createElement('p');
+            todoDisp.textContent = todoText;
+
+            axios.post("http://localhost:3001/addTodo",{
+                task:todoText
+            }).then(res=>console.log("Yep successfully sent"))
+            .catch(err=>console.log(err));
+
+            // 5. Create the checkbox input
+            const todoCheckbox = document.createElement('input');
+            todoCheckbox.type = 'checkbox';
+
+            // 6. Append the elements to the todo item container
+            todoBox.appendChild(todoDisp);
+            todoBox.appendChild(todoCheckbox);
+
+            // 7. Get the main todo list container by its class
+            const todosContainer = document.querySelector(".todos");
+            // 8. Add the new todo item to the container
+            todosContainer.appendChild(todoBox);
+
+            // 9. Clear the input field for the next todo
+            inputElement.value = '';
+        }
+
+        function deleteTodo(event){
+            const elementToRemove=document.getElementById(event.target.id).parentElement;
+            elementToRemove.remove();
+            axios.post("http://localhost:3001/deleteTodo",{
+                id:event.target.id
+            }).then(res=>console.log("Deleted"))
+            .catch(err=>console.log(err));
+        }
+    </script>
+</body>
+</html>

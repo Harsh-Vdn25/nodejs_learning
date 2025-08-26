@@ -4,11 +4,20 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    domain: "http://172.20.16.237:62337/"
+    domain: "http://172.20.16.237:60699/"//
 };
 
 app.use(cors(corsOptions));
-let regUsers = [];
+let regUsers = [
+    {
+        userName:"Harsha",
+        password:"harsha123"
+    },
+    {
+        userName:"WhyShu",
+        password:"whyshu"
+    }
+];
 let userName = "";
 let isNew = true;
 //If the user is already present
@@ -50,14 +59,14 @@ const checkAuthSignin = (req, res, next) => {
 app.post("/signinauth", checkAuthSignin, (req, res) => {
     res.json({
         status: "success",
-        redirectUrl: "http://127.0.0.1:5500/Todolist/FE/Todolist.html"
+        redirectUrl: `http://172.20.16.237:54995/Todolist?userName=${userName}`
     });
 })
 
 app.post("/signupauth", checkAuth, (req, res) => {
     res.json({
         status: "success",
-        redirectUrl: "http://127.0.0.1:5500/Todolist/FE/Todolist.html"
+        redirectUrl: `http://172.20.16.237:54995/Todolist?userName=${userName}`
     });
 })
 

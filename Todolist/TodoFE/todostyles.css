@@ -59,3 +59,11 @@ h2{
 #addbtn:hover{
     background-color: rgb(78, 48, 144);
 }
+
+
+.todobox{
+    display:flex;
+    justify-content: space-between;
+    padding: 0.6vw ;
+    font-size: 0.9rem;
+}

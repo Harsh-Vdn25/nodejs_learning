@@ -64,7 +64,7 @@
 
     function Signin(event) {
         event.preventDefault();
-        axios.post("http://localhost:3000/signinauth", {
+        axios.post("http://localhost:3000/signinauth", {//Unlike the fetch this converts the data into JSON format 
             Signtype: "Signin",
             userName: document.getElementById("username").value.trim(),
             password: document.getElementById("userpassword").value.trim()
@@ -86,11 +86,6 @@
     function redirectPage(data){
         console.log(data);
         if(data.status==="success"){
-            axios.post("http://localhost:3001/todo",{
-                userName:document.getElementById("username").value.trim()
-            })
-            .then(res=>console.log(res.data))
-            .catch(err=>console.log(err));
             window.location.href=data.redirectUrl;
         }
     }
