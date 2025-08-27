@@ -1,0 +1,112 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root{
+    --bgcolor:whitesmoke;
+    --txtcolor:rgb(32, 32, 32);
+}
+body{
+    height: 100vh;
+    background-color: var(--txtcolor);
+}
+.container{
+    width: 32vw;
+    margin: auto;
+    background-color: var(--bgcolor);
+    padding: 2vw;
+    margin-top: 3vw;
+    border-radius: 1vw;
+}
+
+.tasks{
+    padding: 2vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1vw;
+}
+.tasks input::placeholder{
+    font-size: 1.1rem;
+}
+.tasks input{
+    width: 80%;
+    padding: 0.7vw;
+    background: transparent;
+    border: 2px solid var(--txtcolor);
+    border-radius: 1vw;
+}
+.submit-btn{
+    width: 20%;
+    font-size: 1.1rem;
+    padding: 0.7vw;
+    background: transparent;
+    border: 2px solid var(--txtcolor);
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+.submit-btn:hover{
+    background-color: var(--txtcolor);
+    color: var(--bgcolor);
+}
+
+.display{
+    padding:1vw 2vw 1vw 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7vw;
+}
+.individualtask{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.3fr 3fr 0.6fr;
+    align-items: center;
+    background-color:var(--txtcolor);
+    color: var(--bgcolor);
+    padding: 1vw;
+    border-radius: 1vw;
+    border-radius: 2px 4px 8px rgba(0,0,0,0.3);
+
+}
+
+.individualtask p{
+    grid-column: 2/3;
+    font-size: 1.05rem;
+}
+
+.delbtn{
+    grid-column: 3/4;
+    font-size: 0.9rem;
+    padding: 0.1vw;
+    background: transparent;
+    border: 2px solid var(--bgcolor);
+    color: var(--bgcolor);
+    border-radius: 0.5vw;
+    cursor: pointer;
+}
+
+.delbtn:hover{
+    background-color: var(--txtcolor);
+    color: var(--bgcolor);
+}
+
+.btns{
+    width: 100%;
+    display: flex;
+    gap: 1vw;
+    justify-content: flex-start;
+}
+
+.completed-btn,
+.incompleted-btn{
+    font-size: 0.9rem;
+    padding: 0.1vw;
+    background: transparent;
+    border: 2px solid var(--txtcolor);
+    color: var(--txtcolor);
+    border-radius: 0.5vw;
+    cursor: pointer;
+}
