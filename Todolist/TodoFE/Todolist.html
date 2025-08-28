@@ -18,28 +18,28 @@
     </div>
     <script>
         const todocontainer=document.querySelector(".todos");
+        const urlparams=new URLSearchParams(window.location.search);
+        const userId = Number(urlparams.get("userId"));
 
         function getTodolists(){
-            const urlparams=new URLSearchParams(window.location.search);
-            const userName=urlparams.get("userName");
-            axios.get(`http://localhost:3001/getTodo?userName=${userName}`)
+            axios.get(`http://localhost:3001/todos?userId=${userId}`)
             .then(res=>displayAllTodos(res.data))//
             .catch(err=>console.log(err));
         }
 
         function displayAllTodos(data){
-            const newdata=Object.entries(data.Tasks);
-            console.log(newdata);
-            newdata.map(item=>{
+            // const newdata=Object.entries(data.Tasks);
+            console.log(data);
+            data.map(item=>{
                 const box=document.createElement('div');
                 const checkbox=document.createElement('input');
                 checkbox.type="checkbox";
-                checkbox.setAttribute("id",item[1].id);
+                checkbox.setAttribute("id",item.todo_id);
                 checkbox.setAttribute("onclick","deleteTodo(event)");
                 const disp=document.createElement('p');
-                disp.innerHTML=item[1].task;
+                disp.innerHTML=item.description;
 
-                box.setAttribute("id",`box${item[1].id}`);
+                box.setAttribute("id",`box${item.todo_id}`);
                 box.appendChild(disp);
                 box.appendChild(checkbox);
                 box.classList.add("todobox");
@@ -65,11 +65,11 @@
             const todoBox = document.createElement('div');
             todoBox.classList.add('todobox');
 
-            // 4. Create the paragraph for the todo text
+            // 4. Create the paragr  aph for the todo text
             const todoDisp = document.createElement('p');
             todoDisp.textContent = todoText;
 
-            axios.post("http://localhost:3001/addTodo",{
+            axios.post(`http://localhost:3001/todos?userId=${userId}`,{
                 task:todoText
             }).then(res=>console.log("Yep successfully sent"))
             .catch(err=>console.log(err));
@@ -94,9 +94,8 @@
         function deleteTodo(event){
             const elementToRemove=document.getElementById(event.target.id).parentElement;
             elementToRemove.remove();
-            axios.post("http://localhost:3001/deleteTodo",{
-                id:event.target.id
-            }).then(res=>console.log("Deleted"))
+            const deleteId=Number(event.target.id);
+            axios.delete(`http://localhost:3001/todos/${deleteId}?userId=${userId}`).then(res=>console.log("Deleted"))
             .catch(err=>console.log(err));
         }
     </script>

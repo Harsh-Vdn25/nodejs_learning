@@ -64,7 +64,7 @@
 
     function Signin(event) {
         event.preventDefault();
-        axios.post("http://localhost:3000/signinauth", {//Unlike the fetch this converts the data into JSON format 
+        axios.post("http://localhost:5000/signinauth", {//Unlike the fetch this converts the data into JSON format 
             Signtype: "Signin",
             userName: document.getElementById("username").value.trim(),
             password: document.getElementById("userpassword").value.trim()
@@ -74,7 +74,7 @@
 
     function Signup(event) {
         event.preventDefault();
-        axios.post("http://localhost:3000/signupauth", {
+        axios.post("http://localhost:5000/signupauth", {
             Signtype: "Signup",
             userName: document.getElementById("username").value.trim(),
             password: document.getElementById("userpassword").value.trim()
